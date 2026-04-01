@@ -8,9 +8,12 @@ on:
 jobs:
   pr-review:
     uses: matanR2209/devtools/.github/workflows/pr-review-reusable.yml@main
+    permissions:
+      contents: write
+      pull-requests: write
     secrets:
       ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
     with:
-      typescript_blocking: yes
-      eslint_blocking: false       # start advisory
-      claude_blocking: false       # start advisory
+      typescript_blocking: false
+      eslint_blocking: false
+      claude_blocking: false
