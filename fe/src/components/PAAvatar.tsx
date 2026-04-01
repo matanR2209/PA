@@ -82,6 +82,8 @@ export function PAAvatar({ size = 'md', animate = true }: PAAvatarProps): React.
           50%       { transform: scale(1.1); opacity: 0.2; }
         }
       `}</style>
+
+        TEST!!!
     </div>
   );
 }
