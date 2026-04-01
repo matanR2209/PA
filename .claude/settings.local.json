@@ -1,0 +1,82 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm create:*)",
+      "Bash(printf 'y\\\\n')",
+      "Bash(npx create-vite@latest . --template react)",
+      "Bash(npx create-vite@latest --template react .)",
+      "Read(//Users/matanroashe/WebstormProjects/**)",
+      "Bash(npx create-vite@latest PA --template react)",
+      "Bash(rm -rf PA_temp)",
+      "Bash(npx create-vite@latest PA_temp --template react)",
+      "Bash(npm install:*)",
+      "Bash(npx tailwindcss:*)",
+      "Bash(/Users/matanroashe/WebstormProjects/PA/node_modules/.bin/tailwindcss init:*)",
+      "Bash(npm run:*)",
+      "mcp__Claude_Preview__preview_start",
+      "Bash(npm --prefix be install --silent)",
+      "Bash(npm --prefix fe run build)",
+      "Skill(update-config)",
+      "Skill(update-config:*)",
+      "Bash(ipconfig getifaddr:*)",
+      "Bash(xargs kill:*)",
+      "Bash(curl -s http://localhost:5176)",
+      "Bash(curl -sv http://localhost:5176)",
+      "Bash(curl -sk https://localhost:5176)",
+      "Bash(npx vite:*)",
+      "Bash(gtimeout 15 npx vite --port 5200)",
+      "Bash(for port:*)",
+      "Bash(do lsof:*)",
+      "Bash(echo \"port $port is free\")",
+      "Bash(done)",
+      "Bash(find /Users/matanroashe/WebstormProjects/PA/fe/src -name *.js -o -name *.jsx)",
+      "Bash(npx tsc:*)",
+      "Bash(grep -l \"LeftColumn\" /Users/matanroashe/WebstormProjects/PA/fe/src/panels/*.tsx)",
+      "Bash(grep -L \"LeftColumn\" /Users/matanroashe/WebstormProjects/PA/fe/src/panels/*.tsx)",
+      "Bash(curl -s http://localhost:5176/)",
+      "Bash(kill %1)",
+      "Bash(sed -i '' 's|<AISaysWidget />|<AISaysWidget title={capture.title} content={capture.content} onCache={\\(\\) => {}} />|' /Users/matanroashe/WebstormProjects/PA/fe/src/panels/FallbackPanel.tsx)",
+      "Bash(sed -i '' 's|<AISaysWidget hint=\"\"Summarise this resource and extract the key takeaways.\"\" />|<AISaysWidget title={capture.title} content={capture.content} onCache={text => patchMeta\\({ aiSummary: text }\\)} />|' /Users/matanroashe/WebstormProjects/PA/fe/src/panels/ReadWatchPanel.tsx)",
+      "Bash(sed -i '' 's|<AISaysWidget hint=\"\"Suggest a packing list, must-see places, and estimated costs for this destination.\"\" />|<AISaysWidget title={capture.title} content={capture.content} onCache={text => patchMeta\\({ aiSummary: text }\\)} />|' /Users/matanroashe/WebstormProjects/PA/fe/src/panels/TravelPanel.tsx)",
+      "Bash(sed -i '' 's|<AISaysWidget hint=\"\"Break this task into subtasks and suggest a timeline.\"\" />|<AISaysWidget title={capture.title} content={capture.content} onCache={text => patchMeta\\({ aiSummary: text }\\)} />|' /Users/matanroashe/WebstormProjects/PA/fe/src/panels/WorkTaskPanel.tsx)",
+      "Bash(curl -s http://localhost:3001/health)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" -X POST http://localhost:3001/api/analyse -H \"Content-Type: application/json\" -d '{\"\"title\"\":\"\"test\"\",\"\"content\"\":\"\"test\"\"}')",
+      "Bash(node -e \"import\\(''dotenv/config''\\).then\\(\\(\\) => console.log\\(''KEY:'', process.env.ANTHROPIC_API_KEY ? ''SET \\(len='' + process.env.ANTHROPIC_API_KEY.length + ''\\)'' : ''MISSING''\\)\\)\")",
+      "Bash(node -e \"import\\(''''dotenv/config''''\\).then\\(\\(\\) => console.log\\(''''KEY:'''', process.env.ANTHROPIC_API_KEY ? ''''SET'''' : ''''MISSING''''\\)\\)\")",
+      "Bash(xargs -I {} sh -c 'ls -la /proc/{}/cwd 2>/dev/null || lsof -p {} | grep cwd')",
+      "Bash(node -e \":*)",
+      "Bash(open /Users/matanroashe/Downloads/ideapa_dashboard_wireframe.html)",
+      "Bash(open /Users/matanroashe/Downloads/ideapa_dashboard_wireframe_v2.html)",
+      "Bash(npx prisma:*)",
+      "Bash(npm test:*)",
+      "Bash(mv TP-01-captures-api.md TP-01-BE-captures-api.md)",
+      "Bash(mv TP-02-labels-api.md TP-02-BE-labels-api.md)",
+      "Bash(mv TP-03-ai-routes.md TP-03-BE-ai-routes.md)",
+      "Bash(mv TP-04-use-captures.md TP-04-FE-use-captures.md)",
+      "Bash(mv TP-05-use-labels.md TP-05-FE-use-labels.md)"
+    ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq -r '.tool_input.file_path // \"\"' | { read -r f; echo \"$f\" | grep -qE '(be/src/routes/|fe/src/panels/|fe/src/hooks/|prisma/schema\\.prisma)' && echo '{\"systemMessage\": \"📝 HLD reminder: you edited a core file. If this changes architecture, API contract, or data model — update the relevant doc in /docs/hld/\"}' || true; } 2>/dev/null || true"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "prompt=$(jq -r .prompt); if echo \"$prompt\" | grep -qi \"bring the fixtures\"; then echo \"{\\\"systemMessage\\\": \\\"📐 Wireframes: file:///Users/matanroashe/Downloads/ideapa_wireframes_v3_1.html\\\"}\"; fi"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,115 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// ── Users ────────────────────────────────────────────────────────────────────
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String   // bcrypt hash — never store plain text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  captures Capture[]
+  labels   Label[]
+}
+
+// ── Captures ────────────────────────────────────────────────────────────────
+
+model Capture {
+  id        String    @id @default(cuid())
+  title     String
+  content   String    @default("")
+  type      String    @default("idea")
+  category  String?
+  priority  String?   // "low" | "medium" | "high" — null means no priority
+  dueDate   DateTime?
+  meta      Json      @default("{}")
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  userId String?
+  user   User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  notes       Note[]
+  recordings  Recording[]
+  labels      CaptureLabel[]
+  actionItems ActionItem[]
+
+  @@index([userId])
+  @@index([category])
+  @@index([priority])
+  @@index([dueDate])
+  @@index([createdAt(sort: Desc)])
+}
+
+// ── Notes ───────────────────────────────────────────────────────────────────
+
+model Note {
+  id        String   @id @default(cuid())
+  text      String
+  createdAt DateTime @default(now())
+
+  captureId String
+  capture   Capture @relation(fields: [captureId], references: [id], onDelete: Cascade)
+}
+
+// ── Action Items ─────────────────────────────────────────────────────────────
+
+model ActionItem {
+  id        String   @id @default(cuid())
+  text      String
+  status    String   @default("todo") // "todo" | "in-progress" | "done"
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  captureId String
+  capture   Capture @relation(fields: [captureId], references: [id], onDelete: Cascade)
+
+  @@index([captureId])
+  @@index([status])
+}
+
+// ── Recordings ──────────────────────────────────────────────────────────────
+
+model Recording {
+  id       String @id @default(cuid())
+  url      String
+  size     Int
+  mimeType String
+
+  captureId String
+  capture   Capture @relation(fields: [captureId], references: [id], onDelete: Cascade)
+}
+
+// ── Labels ──────────────────────────────────────────────────────────────────
+
+model Label {
+  id    String @id @default(cuid())
+  name  String
+  color String
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  captures CaptureLabel[]
+
+  @@unique([userId, name])
+}
+
+model CaptureLabel {
+  captureId String
+  labelId   String
+
+  capture Capture @relation(fields: [captureId], references: [id], onDelete: Cascade)
+  label   Label   @relation(fields: [labelId], references: [id], onDelete: Cascade)
+
+  @@id([captureId, labelId])
+}

@@ -1,0 +1,16 @@
+name: PR Checks
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  pr-review:
+    uses: matanR2209/devtools/.github/workflows/pr-review-reusable.yml@main
+    secrets:
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+    with:
+      typescript_blocking: yes
+      eslint_blocking: false       # start advisory
+      claude_blocking: false       # start advisory

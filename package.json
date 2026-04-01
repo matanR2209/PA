@@ -1,0 +1,14 @@
+{
+  "name": "ideapa",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "fe": "npm --prefix fe run dev",
+    "be": "npm --prefix be run dev",
+    "dev": "concurrently \"npm run fe\" \"npm run be\"",
+    "install:all": "npm --prefix fe install && npm --prefix be install"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0"
+  }
+}
