@@ -83,7 +83,7 @@ export function PAAvatar({ size = 'md', animate = true }: PAAvatarProps): React.
         }
       `}</style>
 
-        TEST!!!
+        TEST!!! 2
     </div>
   );
 }
